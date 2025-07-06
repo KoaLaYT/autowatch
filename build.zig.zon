@@ -1,0 +1,20 @@
+.{
+    .name = .autowatch,
+    .version = "0.0.1",
+    .fingerprint = 0x3e0dea31606ee02e,
+    .minimum_zig_version = "0.14.0",
+    .dependencies = .{
+        .zigwin32 = .{
+            .url = "git+https://github.com/marlersoft/zigwin32#7b434a47c2b85f395d8e5a6dca47af6a74422521",
+            .hash = "zigwin32-25.0.28-preview-AAAAALqY-wMp_N2rd4U4tD9LAxh0TbUPLKhzx6lngGQK",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+        "README.md",
+        // For example...
+        //"LICENSE",
+    },
+}
