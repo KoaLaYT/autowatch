@@ -70,9 +70,9 @@ const Window = struct {
             self.activate_and_click();
 
             // 移动下一个卡片
-            // 一般移动11下，每5次校准一下
+            // 一般移动11下，每15次校准一下
             var scroll_times: usize = 11;
-            if (i > 0 and i % 5 == 0) {
+            if (i > 0 and i % 15 == 0) {
                 scroll_times = 10;
             }
             for (0..scroll_times) |_| {
