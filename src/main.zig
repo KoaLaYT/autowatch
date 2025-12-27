@@ -42,13 +42,16 @@ const Window = struct {
         };
     }
 
-    fn autowatch(self: *const Self) void {
+    fn autowatch(self: *const Self, adjust_count: u64) void {
         std.debug.print("window size {d}x{d}, at ({d},{d})\n", .{
             self.width, self.height,
             self.x,     self.y,
         });
         std.debug.print("desktop size {d}x{d}\n", .{
             self.desktop_width, self.desktop_height,
+        });
+        std.debug.print("adjust count {d}\n", .{
+            adjust_count,
         });
 
         self.activate_and_click();
@@ -72,7 +75,7 @@ const Window = struct {
             // 移动下一个卡片
             // 一般移动11下，每15次校准一下
             var scroll_times: usize = 11;
-            if (i > 0 and i % 15 == 0) {
+            if (i > 0 and i % adjust_count == 0) {
                 scroll_times = 10;
             }
             for (0..scroll_times) |_| {
@@ -195,10 +198,21 @@ fn enumWindowCb(hwnd: win32.HWND, lparam: win32.LPARAM) callconv(std.os.windows.
 }
 
 pub fn main() !void {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    const allocator = gpa.allocator();
+    defer _ = gpa.deinit();
+
+    var args = try std.process.argsWithAllocator(allocator);
+    defer args.deinit();
+
+    _ = args.next();
+    const adjust_count_s = args.next().?;
+    const adjust_count = try std.fmt.parseInt(u64, adjust_count_s, 10);
+
     if (findTargetWindow()) |hwnd| {
         std.debug.print("find target window {any}\n", .{hwnd});
         const window = Window.init(hwnd);
-        window.autowatch();
+        window.autowatch(adjust_count);
     } else {
         std.debug.print("cannot find target window\n", .{});
     }

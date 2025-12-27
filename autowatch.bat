@@ -1,1 +1,1 @@
-start "" "cmd /k  autowatch.exe"
+start "" "C:\Users\KoaLaYT\Desktop\autowatch.exe" "10"
